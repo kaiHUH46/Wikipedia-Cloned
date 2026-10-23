@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8f9fa">
+  <title>Lippedia — conhecimento livre</title>
+
+  <style>
+    :root {
+      --blue: #3366cc;
+      --blue-dark: #254f9e;
+      --text: #202122;
+      --muted: #54595d;
+      --border: #a2a9b1;
+      --background: #f8f9fa;
+      --white: #fff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--background);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.65;
+    }
+
+    header {
+      padding: 32px 20px 24px;
+      text-align: center;
+      background: var(--white);
+      border-bottom: 1px solid #eaecf0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .brand-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      color: var(--blue);
+      font-family: Georgia, serif;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: normal;
+    }
+
+    .subtitle {
+      margin: 4px 0 22px;
+      color: var(--muted);
+    }
+
+    .search-form {
+      display: flex;
+      width: min(100%, 680px);
+      margin: 0 auto;
+    }
+
+    .search-form input {
+      flex: 1;
+      min-width: 0;
+      padding: 13px 15px;
+      border: 1px solid var(--border);
+      border-right: 0;
+      border-radius: 4px 0 0 4px;
+      font-size: 16px;
+    }
+
+    .search-form input:focus {
+      outline: 2px solid var(--blue);
+      outline-offset: -2px;
+    }
+
+    .search-form button {
+      padding: 0 22px;
+      border: 1px solid var(--blue);
+      border-radius: 0 4px 4px 0;
+      background: var(--blue);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .search-form button:hover {
+      background: var(--blue-dark);
+    }
+
+    main {
+      width: min(100% - 32px, 1000px);
+      min-height: 55vh;
+      margin: 28px auto;
+      padding: clamp(18px, 4vw, 36px);
+      background: var(--white);
+      border: 1px solid #eaecf0;
+      border-radius: 4px;
+    }
+
+    .welcome {
+      padding: 26px 12px;
+      text-align: center;
+    }
+
+    .welcome h2 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: normal;
+    }
+
+    .hint {
+      color: var(--muted);
+    }
+
+    .status {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .results-list {
+      margin: 0 0 28px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .results-list li {
+      padding: 13px 0;
+      border-bottom: 1px solid #eaecf0;
+    }
+
+    .result-button {
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--blue);
+      cursor: pointer;
+      font: inherit;
+      font-size: 18px;
+      text-align: left;
+    }
+
+    .result-button:hover {
+      text-decoration: underline;
+    }
+
+    .result-description {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    article h2 {
+      margin: 4px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(25px, 4vw, 34px);
+      font-weight: normal;
+    }
+
+    .article-text p {
+      margin: 0 0 16px;
+    }
+
+    .source-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--blue);
+    }
+
+    .loading {
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .error {
+      padding: 14px;
+      border-left: 4px solid #d33;
+      background: #fff4f4;
+    }
+
+    footer {
+      padding: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--blue);
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding-top: 24px;
+      }
+
+      .search-form button {
+        padding: 0 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">E</div>
+      <h1>Enciclopédia</h1>
+    </div>
+
+    <p class="subtitle">Conhecimento livre para todos</p>
+
+    <form class="search-form" id="searchForm">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Pesquise um assunto..."
+        aria-label="Pesquise um assunto"
+        required
+      >
+      <button type="submit">Pesquisar</button>
+    </form>
+  </header>
+
+  <main id="content" aria-live="polite">
+    <section class="welcome">
+      <h2>Explore o conhecimento</h2>
+      <p>
+        Digite um assunto na busca para encontrar artigos da
+        Wikipédia em português.
+      </p>
+      <p class="hint">
+        Experimente: “Segunda Guerra Mundial”, “Sistema Solar” ou “Machado de Assis”.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    Os textos são carregados da
+    <a href="https://pt.wikipedia.org/" target="_blank" rel="noopener noreferrer">
+      Wikipédia em português
+    </a>.
+  </footer>
+
+  <script>
+    const form = document.getElementById("searchForm");
+    const input = document.getElementById("searchInput");
+    const content = document.getElementById("content");
+
+    const API = "https://pt.wikipedia.org/w/api.php";
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      searchArticles(input.value.trim());
+    });
+
+    async function searchArticles(query) {
+      if (!query) return;
+
+      content.innerHTML = '<p class="loading">Pesquisando artigos...</p>';
+
+      try {
+        const url = new URL(API);
+        url.search = new URLSearchParams({
+          action: "query",
+          list: "search",
+          srsearch: query,
+          srlimit: "6",
+          format: "json",
+          origin: "*"
+        });
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Falha na pesquisa.");
+
+        const data = await response.json();
+        const results = data.query?.search ?? [];
+
+        if (results.length === 0) {
+          content.innerHTML = `
+            <p class="error">
+              Não encontrei artigos para essa pesquisa. Tente outras palavras.
+            </p>
+          `;
+          return;
+        }
+
+        const list = document.createElement("ul");
+        list.className = "results-list";
+
+        for (const result of results) {
+          const item = document.createElement("li");
+          const button = document.createElement("button");
+          const description = document.createElement("p");
+
+          button.type = "button";
+          button.className = "result-button";
+          button.textContent = result.title;
+          button.addEventListener("click", () => loadArticle(result.pageid));
+
+          description.className = "result-description";
+          description.textContent = cleanHtml(result.snippet || "");
+
+          item.append(button, description);
+          list.appendChild(item);
+        }
+
+        content.replaceChildren();
+
+        const status = document.createElement("p");
+        status.className = "status";
+        status.textContent = `Resultados para “${query}”: escolha um artigo para ler.`;
+
+        content.append(status, list);
+      } catch (error) {
+        showError("Não foi possível fazer a pesquisa. Verifique sua conexão e tente novamente.");
+      }
+    }
+
+    async function loadArticle(pageId) {
+      content.innerHTML = '<p class="loading">Carregando artigo...</p>';
+
+      try {
+        const url = new URL(API);
+        url.search = new URLSearchParams({
+          action: "query",
+          pageids: String(pageId),
+          prop: "extracts",
+          explaintext: "1",
+          exsectionformat: "plain",
+          format: "json",
+          formatversion: "2",
+          origin: "*"
+        });
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Falha ao carregar o artigo.");
+
+        const data = await response.json();
+        const page = data.query?.pages?.[0];
+
+        if (!page || page.missing || !page.extract) {
+          showError("Não foi possível carregar esse artigo.");
+          return;
+        }
+
+        const article = document.createElement("article");
+        const title = document.createElement("h2");
+        const text = document.createElement("div");
+        const source = document.createElement("a");
+
+        title.textContent = page.title;
+        text.className = "article-text";
+
+        // Divide o texto em parágrafos e insere como texto simples,
+        // evitando interpretar conteúdo externo como HTML.
+        page.extract
+          .split(/\n+/)
+          .map(paragraph => paragraph.trim())
+          .filter(Boolean)
+          .forEach(paragraph => {
+            const p = document.createElement("p");
+            p.textContent = paragraph;
+            text.appendChild(p);
+          });
+
+        source.className = "source-link";
+        source.href = `https://pt.wikipedia.org/?curid=${page.pageid}`;
+        source.target = "_blank";
+        source.rel = "noopener noreferrer";
+        source.textContent = "Ler o artigo completo na Wikipédia";
+
+        article.append(title, text, source);
+        content.replaceChildren(article);
+      } catch (error) {
+        showError("Não foi possível carregar o artigo. Verifique sua conexão e tente novamente.");
+      }
+    }
+
+    function cleanHtml(value) {
+      const temporaryElement = document.createElement("div");
+      temporaryElement.innerHTML = value;
+      return temporaryElement.textContent || "";
+    }
+
+    function showError(message) {
+      const paragraph = document.createElement("p");
+      paragraph.className = "error";
+      paragraph.textContent = message;
+      content.replaceChildren(paragraph);
+    }
+  </script>
+</body>
+</html>html>
